@@ -1,46 +1,49 @@
 import React from 'react';
-import { Dimensions, FlatList, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryItem from './CategoryItem';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { CategoryItemProps } from '../../types/Category';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+type Props = {
+  data: CategoryItemProps[];
+};
 
-function CategoryList() {
+function CategoryList({ data }: Props) {
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => <CategoryItem title={item.title} />}
-        keyExtractor={item => item.id}
-      />
+      <Text style={styles.title}>카테고리</Text>
+      <ScrollView contentContainerStyle={styles.list}>
+        {data.map(item => (
+          <CategoryItem
+            icon={item.icon}
+            name={item.name}
+            id={item.id}
+            key={item.id}
+          />
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 export default CategoryList;
 
-const fullHeight = Dimensions.get('window').height;
-
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: fullHeight,
     flex: 1,
-    // display: 'flex',
-    // flexDirection: 'column',
-    // justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: RFValue(16),
+    fontWeight: '700',
+    marginBottom: 16,
+  },
+  list: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+    paddingBottom: 40,
   },
 });

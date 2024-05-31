@@ -10,7 +10,10 @@ function AppInner() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShadowVisible: false }}>
+      screenOptions={{
+        headerShadowVisible: false,
+        tabBarStyle: { position: 'absolute' },
+      }}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={HomeScreen} />
       <Tab.Screen name="Sentence" component={HomeScreen} />
