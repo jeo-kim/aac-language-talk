@@ -17,6 +17,10 @@ export class CardRepository {
     return this.repository.findOne({ where: { id: id } });
   }
 
+  /**
+   * 카드 생성
+   * @param card
+   */
   async createCard(card: Partial<CardEntity>): Promise<CardEntity> {
     const newCard = this.repository.create(card);
     return this.repository.save(newCard);
@@ -34,6 +38,10 @@ export class CardRepository {
     await this.repository.clear();
   }
 
+  /**
+   * 카테고리 ID로 카드 리스트 조회
+   * @param id
+   */
   async getCardsByCategoryId(id: number) {
     return this.repository.find({ where: { category: { id: id } } });
   }
