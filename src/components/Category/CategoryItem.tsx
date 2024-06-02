@@ -3,10 +3,10 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { CategoryItemProps } from '../../types/Category';
 
-function CategoryItem({ icon, name, id }: CategoryItemProps) {
+function CategoryItem({ icon, name, uid }: CategoryItemProps) {
   return (
     <View style={styles.view}>
-      <Image src={icon} alt={'icon' + id} style={styles.image} />
+      <Image src={icon} alt={'icon' + uid} style={styles.image} />
       <Text style={styles.text}>{name}</Text>
     </View>
   );

@@ -1,12 +1,12 @@
-// src/database/repositories/CardRepository.ts
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CardEntity } from '../entities/CardEntity';
+import { AppDataSource } from '../connection';
 
 export class CardRepository {
   private repository: Repository<CardEntity>;
 
   constructor() {
-    this.repository = getRepository(CardEntity);
+    this.repository = AppDataSource.getRepository(CardEntity);
   }
 
   async getAllCards(): Promise<CardEntity[]> {
@@ -14,7 +14,7 @@ export class CardRepository {
   }
 
   async getCardById(id: number): Promise<CardEntity | null> {
-    return this.repository.findOne({ where: { uid: id } });
+    return this.repository.findOne({ where: { id: id } });
   }
 
   async createCard(card: Partial<CardEntity>): Promise<CardEntity> {
@@ -28,5 +28,9 @@ export class CardRepository {
 
   async deleteCard(id: number): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async deleteAllCards() {
+    await this.repository.clear();
   }
 }

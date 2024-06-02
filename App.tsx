@@ -6,10 +6,13 @@
  */
 
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppInner from './AppInner';
-import { CardRepository } from './database/repositories/CardRepositories';
-import connection from './database/connection';
+import { initializeDatabase } from './database/connection';
+import { ActivityIndicator, View } from 'react-native';
+import { seedDatabase } from './database/seed';
+
+const USE_SEED_DATA = true; // 초기 데이터를 삽입할지 여부를 제어하는 플래그
 
 const theme = {
   ...DefaultTheme,
@@ -20,39 +23,26 @@ const theme = {
 };
 
 function App(): React.JSX.Element {
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    (async () => {
-      await connection;
-      const cardRepository = new CardRepository();
+    const init = async () => {
+      await initializeDatabase();
+      if (USE_SEED_DATA) {
+        await seedDatabase();
+      }
+      setLoading(false);
+    };
 
-      // Create a new card
-      const newCard = await cardRepository.createCard({
-        card_name: 'Sample Card',
-        category_uid: 1,
-        card_image: null,
-        bookmarked: 0,
-      });
-
-      console.log('Created new card:', newCard);
-
-      // Fetch all cards
-      const allCards = await cardRepository.getAllCards();
-      console.log('All cards:', allCards);
-
-      // Update a card
-      await cardRepository.updateCard(newCard.uid, {
-        card_name: 'Updated Sample Card',
-      });
-
-      // Fetch card by id
-      const updatedCard = await cardRepository.getCardById(newCard.uid);
-      console.log('Updated card:', updatedCard);
-
-      // Delete a card
-      await cardRepository.deleteCard(newCard.uid);
-      console.log('Card deleted');
-    })();
+    init();
   }, []);
+
+  if (loading) {
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <NavigationContainer theme={theme}>
