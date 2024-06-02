@@ -51,7 +51,9 @@ export const seedDatabase = async () => {
 
     // 데이터 삽입 후 모든 카테고리를 가져와서 출력
     const allCategories = await categoryRepo.getAllCategories();
+    const allCards = await cardRepo.getAllCards();
     console.log('All Categories:', allCategories);
+    console.log('All Cards:', allCards);
   } catch (error) {
     console.error('Error seeding database:', error);
   }

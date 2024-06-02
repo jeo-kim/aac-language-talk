@@ -7,7 +7,7 @@ export class CardEntity {
   id: number;
 
   @Column({ name: 'card_name', type: 'text' })
-  card_name: string = '';
+  name: string = '';
 
   @ManyToOne(() => CategoryEntity, category => category.cards)
   category: CategoryEntity;

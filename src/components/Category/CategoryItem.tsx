@@ -1,16 +1,27 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { CategoryItemProps } from '../../types/Category';
+import { CardRepository } from '../../../database/repositories/CardRepository';
 
-function CategoryItem({ icon, name, uid }: CategoryItemProps) {
+const CategoryItem: React.FC<CategoryItemProps> = ({ icon, name, id }) => {
+  const handlePress = async () => {
+    try {
+      const cardRepo = new CardRepository();
+      const cards = await cardRepo.getCardsByCategoryId(id);
+      Alert.alert('카드 리스트', JSON.stringify(cards, null, 2));
+    } catch (error) {
+      console.error('Error fetching cards:', error);
+    }
+  };
+
   return (
-    <View style={styles.view}>
-      <Image src={icon} alt={'icon' + uid} style={styles.image} />
+    <TouchableOpacity style={styles.view} onPress={handlePress}>
+      <Image source={{ uri: icon }} style={styles.image} />
       <Text style={styles.text}>{name}</Text>
-    </View>
+    </TouchableOpacity>
   );
-}
+};
 
 export default CategoryItem;
 

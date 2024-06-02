@@ -20,7 +20,7 @@ function Home({}: Props) {
         console.log({ data });
 
         const transformedData: CategoryItemProps[] = data.map(category => ({
-          uid: category.id,
+          id: category.id,
           icon: category.icon || '',
           name: category.name,
         }));

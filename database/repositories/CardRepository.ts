@@ -33,4 +33,8 @@ export class CardRepository {
   async deleteAllCards() {
     await this.repository.clear();
   }
+
+  async getCardsByCategoryId(id: number) {
+    return this.repository.find({ where: { category: { id: id } } });
+  }
 }

@@ -18,8 +18,8 @@ function CategoryList({ data }: Props) {
           <CategoryItem
             icon={item.icon}
             name={item.name}
-            uid={item.uid}
-            key={item.uid}
+            id={item.id}
+            key={item.id}
           />
         ))}
       </ScrollView>

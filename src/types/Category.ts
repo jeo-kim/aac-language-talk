@@ -1,5 +1,5 @@
 export type CategoryItemProps = {
-  uid: number;
+  id: number;
   icon: string | Blob | null;
   name: string;
   order?: number;
