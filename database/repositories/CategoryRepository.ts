@@ -17,6 +17,7 @@ export class CategoryRepository {
   async getCategoryById(id: number): Promise<CategoryEntity | null> {
     return this.repository.findOne({
       where: { id },
+      // relations: ['cards'],  // 카드를 함께 로드
     });
   }
 
@@ -43,6 +44,7 @@ export class CategoryRepository {
     await this.repository.update(id, category);
     return this.repository.findOne({
       where: { id },
+      // relations: ['cards'],  // 수정 후에도 카드를 함께 로드
     });
   }
 
@@ -51,7 +53,9 @@ export class CategoryRepository {
    * @returns 카테고리 목록
    */
   async getAllCategories(): Promise<CategoryEntity[]> {
-    return this.repository.find();
+    return this.repository.find({
+      // relations: ['cards'],  // 카드를 함께 로드
+    });
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 import { CardEntity } from './CardEntity';
 
 @Entity()
@@ -12,6 +12,6 @@ export class CategoryEntity {
   @Column({ name: 'category_name', type: 'text' })
   name: string = '';
 
-  @OneToMany(() => CardEntity, card => card.category)
+  @ManyToMany(() => CardEntity, card => card.categories)
   cards: CardEntity[];
 }
