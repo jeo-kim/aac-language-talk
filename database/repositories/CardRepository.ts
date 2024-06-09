@@ -49,6 +49,13 @@ export class CardRepository {
     return this.repository.save(newCard);
   }
 
+  /**
+   * 카드 수정
+   * @param id
+   * @param updateData: Partial<CardEntity>
+   * @param categoryIds
+   * @param tagIds
+   */
   async updateCard(
     id: number,
     updateData: Partial<CardEntity>,
@@ -79,6 +86,25 @@ export class CardRepository {
     }
 
     Object.assign(card, updateData);
+
+    await this.repository.save(card);
+  }
+
+  /**
+   * 카드 북마크 값 수정
+   * @param id
+   * @param bookmarked
+   */
+  async updateBookmarked(id: number, bookmarked: number): Promise<void> {
+    const card = await this.repository.findOne({
+      where: { id },
+    });
+
+    if (!card) {
+      throw new Error('Card not found');
+    }
+
+    card.bookmarked = bookmarked;
 
     await this.repository.save(card);
   }
