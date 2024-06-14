@@ -59,6 +59,10 @@ function Home({ navigation }: Props) {
     navigation.navigate('AddCategory');
   };
 
+  const handleCardAdd = () => {
+    navigation.navigate('AddCard');
+  };
+
   return (
     <Provider>
       <View style={styles.view}>
@@ -82,7 +86,7 @@ function Home({ navigation }: Props) {
               {
                 icon: 'plus',
                 label: '카드 추가',
-                onPress: () => console.log('카드 추가'),
+                onPress: handleCardAdd,
               },
             ]}
             onStateChange={({ open }) => setOpen(open)}

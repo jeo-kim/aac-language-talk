@@ -24,21 +24,57 @@ export class CardRepository {
     });
   }
 
+  // /**
+  //  * 카드 생성
+  //  * @param card
+  //  */
+  // async createCard(
+  //   card: Partial<CardEntity>,
+  //   categoryIds: number[],
+  //   tagIds: number[],
+  // ): Promise<CardEntity> {
+  //   const categories = await AppDataSource.getRepository(CategoryEntity).findBy(
+  //     { id: In(categoryIds) },
+  //   );
+  //   const tags = await AppDataSource.getRepository(TagEntity).findBy({
+  //     id: In(tagIds),
+  //   });
+  //
+  //   const newCard = this.repository.create({
+  //     ...card,
+  //     categories,
+  //     tags,
+  //   });
+  //
+  //   return this.repository.save(newCard);
+  // }
+
   /**
    * 카드 생성
    * @param card
+   * @param categoryIds
+   * @param tagNames
    */
   async createCard(
     card: Partial<CardEntity>,
     categoryIds: number[],
-    tagIds: number[],
+    tagNames: string[],
   ): Promise<CardEntity> {
-    const categories = await AppDataSource.getRepository(CategoryEntity).findBy(
-      { id: In(categoryIds) },
+    const categoryRepo = AppDataSource.getRepository(CategoryEntity);
+    const tagRepo = AppDataSource.getRepository(TagEntity);
+
+    const categories = await categoryRepo.findBy({ id: In(categoryIds) });
+
+    const tags = await Promise.all(
+      tagNames.map(async text => {
+        let tag = await tagRepo.findOneBy({ text });
+        if (!tag) {
+          tag = tagRepo.create({ text });
+          await tagRepo.save(tag);
+        }
+        return tag;
+      }),
     );
-    const tags = await AppDataSource.getRepository(TagEntity).findBy({
-      id: In(tagIds),
-    });
 
     const newCard = this.repository.create({
       ...card,

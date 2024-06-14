@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/pages/Home';
 import AddCategory from './src/pages/AddCategory';
+import AddCard from './src/pages/AddCard';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -15,6 +16,11 @@ function HomeStackScreen() {
         name="AddCategory"
         component={AddCategory}
         options={{ title: '카테고리 추가' }}
+      />
+      <HomeStack.Screen
+        name="AddCard"
+        component={AddCard}
+        options={{ title: '카드 추가' }}
       />
     </HomeStack.Navigator>
   );
