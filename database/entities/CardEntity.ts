@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { CategoryEntity } from './CategoryEntity';
 import { TagEntity } from './TagEntity';
+import { SentenceEntity } from './SentenceEntity';
 
 @Entity()
 export class CardEntity {
@@ -37,4 +38,7 @@ export class CardEntity {
     inverseJoinColumn: { name: 'tagId', referencedColumnName: 'id' },
   })
   tags: TagEntity[];
+
+  @ManyToMany(() => SentenceEntity, sentence => sentence.cards)
+  sentences: SentenceEntity[];
 }
