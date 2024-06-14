@@ -2,6 +2,8 @@
 import { DataSource } from 'typeorm';
 import { CardEntity } from './entities/CardEntity';
 import { CategoryEntity } from './entities/CategoryEntity';
+import { TagEntity } from './entities/TagEntity';
+import { SentenceEntity } from './entities/SentenceEntity';
 
 export const AppDataSource = new DataSource({
   type: 'react-native',
@@ -9,7 +11,7 @@ export const AppDataSource = new DataSource({
   location: 'default',
   logging: ['error', 'query', 'schema'],
   synchronize: true,
-  entities: [CardEntity, CategoryEntity],
+  entities: [CardEntity, CategoryEntity, TagEntity, SentenceEntity],
 });
 
 export const initializeDatabase = async () => {
