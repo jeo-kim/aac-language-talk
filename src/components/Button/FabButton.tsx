@@ -4,7 +4,7 @@ import { CardIcon, CategoryIcon, CloseIcon, PlusIcon } from '../../assets/svgs';
 import { StyleSheet } from 'react-native';
 
 interface FabBtnProps {
-  setPress: (page: string) => void;
+  setPress: (page: string, id: number) => void;
   isOpen: boolean;
   setIsOpen: (state: boolean) => void;
 }
@@ -28,13 +28,13 @@ function FabButton({ setPress, isOpen, setIsOpen }: FabBtnProps) {
           {
             icon: () => <CategoryIcon />,
             label: '카테고리 추가',
-            onPress: () => setPress('AddCategory'),
+            onPress: () => setPress('AddItems', 1),
             style: { backgroundColor: 'white', borderRadius: 36 },
           },
           {
             icon: () => <CardIcon />,
             label: '카드 추가',
-            onPress: () => setPress('AddCard'),
+            onPress: () => setPress('AddItems', 2),
             style: { backgroundColor: 'white', borderRadius: 36 },
           },
         ]}

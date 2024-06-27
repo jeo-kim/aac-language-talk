@@ -56,8 +56,8 @@ function Home({ navigation }: Props) {
     );
   }
 
-  const handleFabNavigate = (page: string) => {
-    navigation.navigate(page);
+  const handleFabNavigate = (page: string, id: number) => {
+    navigation.navigate(page, { id: id });
   };
 
   return (
