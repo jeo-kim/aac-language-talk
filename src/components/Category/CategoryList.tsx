@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(20),
     fontWeight: '700',
     marginBottom: 16,
   },
