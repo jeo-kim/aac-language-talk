@@ -30,6 +30,6 @@ const TextWrapper = styled.Text`
   font-weight: 700;
 `;
 
-const RightWrapper = styled.View`
+const RightWrapper = styled.Text`
   color: #595f72;
 `;
