@@ -42,21 +42,21 @@ function AppInner() {
         tabBarInactiveTintColor: '#8E95A3',
       }}>
       <Tab.Screen
-        name="Home"
+        name="홈"
         component={HomeStackScreen}
         options={{
           tabBarIcon: ({ color }) => <HomeIcon color={color} fill={color} />,
         }}
       />
       <Tab.Screen
-        name="Search"
+        name="검색"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => <SearchIcon color={color} fill={color} />,
         }}
       />
       <Tab.Screen
-        name="Sentence"
+        name="문장"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => (
@@ -65,7 +65,7 @@ function AppInner() {
         }}
       />
       <Tab.Screen
-        name="Setting"
+        name="설정"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => <SettingIcon color={color} fill={color} />,
