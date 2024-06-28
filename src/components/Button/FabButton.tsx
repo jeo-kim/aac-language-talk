@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
   },
 
   fab: {
-    paddingBottom: 48,
+    marginBottom: 48,
   },
 });
