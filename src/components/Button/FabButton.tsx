@@ -16,9 +16,9 @@ function FabButton({ setPress, isOpen, setIsOpen }: FabBtnProps) {
         open={isOpen}
         icon={() =>
           isOpen ? (
-            <CloseIcon width={24} height={24} />
+            <CloseIcon width={24} height={24} color="white" />
           ) : (
-            <PlusIcon width={24} height={24} />
+            <PlusIcon width={24} height={24} color="white" />
           )
         }
         fabStyle={styles.fabItem}

@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  Button,
-  Image,
-  ScrollView,
-} from 'react-native';
-import MultiSelect from 'react-native-multiple-select';
+import React, { useState, useEffect, useCallback, ReactNode } from 'react';
+import { Text, Button, Image } from 'react-native';
 import { CategoryRepository } from '../../../database/repositories/CategoryRepository';
 import { CardRepository } from '../../../database/repositories/CardRepository';
-import { launchImageLibrary } from 'react-native-image-picker';
 import { CategoryEntity } from '../../../database/entities/CategoryEntity';
 import { useNavigation } from '@react-navigation/native';
 import Title from '../Title/Title';
+import styled from 'styled-components/native';
+import Input from '../Input/Input';
+import ImageUploader from '../FileUploader/ImageUploader';
+import { CloseIcon } from '../../assets/svgs';
+import Select from '../Select/Select';
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 
 function AddCard() {
   const [name, setName] = useState('');
@@ -50,19 +46,6 @@ function AddCard() {
     }
   };
 
-  const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo' }, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.error('ImagePicker Error: ', response.errorMessage);
-      } else if (response.assets && response.assets.length > 0) {
-        const uri = response.assets[0].uri;
-        setImageUri(uri);
-      }
-    });
-  };
-
   const handleAddTag = () => {
     if (tagInput.trim() !== '') {
       setTags(prevTags => [...prevTags, tagInput.trim()]);
@@ -70,108 +53,105 @@ function AddCard() {
     }
   };
 
+  const handleDelteTag = (selected: string) => {
+    setTags(tags.filter(tag => tag !== selected));
+  };
+
+  const renderItem = useCallback(
+    ({ item }) => (
+      <CategoryItemWrapper>
+        <Image source={item.icon} width={70} height={70} />
+        <Text>{item.name}</Text>
+      </CategoryItemWrapper>
+    ),
+    [],
+  );
+
+  const selectCategory = (): ReactNode => {
+    return <BottomSheetFlatList data={categories} renderItem={renderItem} />;
+  };
+
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+    <Container>
+      <Wrapper>
         <Title label="카테고리" />
-        <MultiSelect
-          items={categories}
-          uniqueKey="id"
-          onSelectedItemsChange={setCategoryIds}
-          selectedItems={categoryIds}
-          selectText="카테고리 선택"
-          searchInputPlaceholderText="카테고리 검색..."
-          tagRemoveIconColor="#CCC"
-          tagBorderColor="#CCC"
-          tagTextColor="#CCC"
-          selectedItemTextColor="#CCC"
-          selectedItemIconColor="#CCC"
-          itemTextColor="#000"
-          displayKey="name"
-          searchInputStyle={{ color: '#cccccc' }}
-          submitButtonColor="#48d22b"
-          submitButtonText="확인"
-        />
-        <Title label="카드 이름" />
-        <TextInput style={styles.input} value={name} onChangeText={setName} />
-
-        <Title label="카드 이미지" />
-        <Button title="이미지 선택" onPress={selectImage} />
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.image} />
-        ) : null}
-
-        <Title label="태그" />
-        <View style={styles.tagInputContainer}>
-          <TextInput
-            style={styles.input}
-            value={tagInput}
-            onChangeText={setTagInput}
+        <Select placeholder="카테고리를 선택해주세요.">
+          {selectCategory()}
+        </Select>
+      </Wrapper>
+      <Wrapper>
+        <Title label="카드 이름" children={<Text>{name.length}/20</Text>} />
+        <Input setValue={setName} placeholder="카드 이름을 입력해주세요." />
+      </Wrapper>
+      <Wrapper>
+        <Title label="카테고리 이미지" />
+        <ImageUploader setImgUri={setImageUri} />
+        {imageUri ? <Image source={{ uri: imageUri }} /> : null}
+      </Wrapper>
+      <Wrapper>
+        <Title label="검색 태그" children={<Text>{tags.length}/10</Text>} />
+        <TagInputWrapper>
+          <Input
+            setValue={setTagInput}
+            placeholder="태그를 입력해주세요."
+            clearVal={tagInput ? false : true}
           />
           <Button title="추가" onPress={handleAddTag} />
-        </View>
-
-        <View style={styles.tagList}>
+        </TagInputWrapper>
+        <TagsWrapper>
           {tags.map((tag, index) => (
-            <View key={index} style={styles.tagItem}>
+            <TagContainer key={index} onPress={() => handleDelteTag(tag)}>
               <Text>{tag}</Text>
-            </View>
+              <CloseIcon width={7} height={7} color="#353C49" />
+            </TagContainer>
           ))}
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button title="저장하기" onPress={handleAddCard} />
-        </View>
-      </ScrollView>
-    </View>
+        </TagsWrapper>
+      </Wrapper>
+      <Button title="저장하기" onPress={handleAddCard} />
+    </Container>
   );
 }
 
 export default AddCard;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollViewContent: {
-    padding: 16,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  input: {
-    height: 25,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 16,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    flex: 1,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginVertical: 16,
-  },
-  tagInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  tagList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 16,
-  },
-  tagItem: {
-    backgroundColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 8,
-    margin: 4,
-  },
-  buttonContainer: {
-    padding: 16,
-    borderTopWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-});
+const Container = styled.ScrollView`
+  flex: 1;
+  padding: 16px;
+`;
+
+const Wrapper = styled.View`
+  padding-bottom: 36px;
+`;
+
+const TagInputWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const TagsWrapper = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+`;
+
+const TagContainer = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  background-color: rgba(142, 149, 163, 0.3);
+  border-radius: 4px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  align-self: flex-start;
+`;
+
+const CategoryItemWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;

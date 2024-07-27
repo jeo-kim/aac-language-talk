@@ -27,7 +27,7 @@ function AddCategory() {
     <Container>
       <Wrapper>
         <Title label="카테고리 이름" children={<Text>{name.length}/20</Text>} />
-        <Input setValue={setName} />
+        <Input setValue={setName} placeholder="카테고리 이름을 입력해주세요." />
       </Wrapper>
       <Wrapper>
         <Title label="카테고리 이미지" />
@@ -40,10 +40,11 @@ function AddCategory() {
 
 export default AddCategory;
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   flex: 1;
   padding: 16px;
-  gap: 36px;
 `;
 
-const Wrapper = styled.View``;
+const Wrapper = styled.View`
+  padding-bottom: 36px;
+`;

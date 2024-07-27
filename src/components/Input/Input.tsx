@@ -6,9 +6,11 @@ import { useDebounce } from '../../hooks/useDebounce';
 
 interface Props {
   setValue: (value: string) => void;
+  clearVal?: boolean;
+  placeholder: string;
 }
 
-function Input({ setValue }: Props) {
+function Input({ setValue, placeholder, clearVal }: Props) {
   const [text, setText] = useState('');
 
   const debouncedValue = useDebounce(text, 300);
@@ -17,14 +19,21 @@ function Input({ setValue }: Props) {
     setValue(debouncedValue);
   }, [debouncedValue, setValue]);
 
-  const handleTextChange = (value: string) => {
-    setText(value);
+  useEffect(() => {
+    if (clearVal) {
+      setText('');
+    }
+  }, [clearVal]);
+
+  const handleTextChange = (val: string) => {
+    setText(val);
   };
 
   return (
     <InputWrapper>
       <TextInput
-        placeholder="카테고리 이름을 입력해주세요."
+        placeholder={placeholder}
+        placeholderTextColor="#8e95a3"
         onChangeText={handleTextChange}
         value={text}
         maxLength={20}
@@ -40,4 +49,5 @@ const InputWrapper = styled.View`
   font-size: ${RFValue(16)}px;
   padding: 17px 15px;
   border-radius: 12px;
+  flex: 1;
 `;

@@ -11,6 +11,6 @@ module.exports = {
     ['@babel/plugin-transform-private-methods', { loose: true }],
     ['@babel/plugin-transform-private-property-in-object', { loose: true }],
     ['babel-plugin-styled-components'],
-    'react-native-reanimated/plugin', // 이 줄을 추가합니다.
+    'react-native-reanimated/plugin',
   ],
 };
