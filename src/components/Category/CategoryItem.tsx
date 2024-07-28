@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
   },
   text: {
-    fontSize: RFValue(20),
+    fontSize: RFValue(24),
     fontWeight: '700',
   },
 });
